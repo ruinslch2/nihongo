@@ -1,22 +1,22 @@
-import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
+import {Navigate, RouteObject, useRoutes} from 'react-router-dom';
 import BasePage from "./app/BasePage.tsx";
 import HomePage from "./app/HomePage.tsx";
-import TimerGame from "./app/components/TimerGame.tsx";
 import DictionaryForm from "./app/components/DictionaryForm.tsx";
+import SelectCardPage from "./app/Pages/SelectCardPage.tsx";
 
 const PAGE_CONFIG: RouteObject[] = [
     {
         path: '/nihongo',
-        element: <BasePage />,
+        element: <BasePage/>,
         children: [
-            { path: 'home', element: <HomePage /> },
-            { path: 'timer-game', element: <TimerGame />},
-            { path: 'add-dictionary', element: <DictionaryForm />}
+            {path: 'home', element: <HomePage/>},
+            {path: 'timer-game', element: <SelectCardPage />},
+            {path: 'add-dictionary', element: <DictionaryForm/>}
         ],
     },
-    { path: '/', element: <Navigate to="/nihongo/home" /> },
-    { path: '', element: <Navigate to="/nihongo/home" /> },
-    { path: '*', element: <Navigate to="/nihongo/home" /> },
+    {path: '/', element: <Navigate to="/nihongo/home"/>},
+    {path: '', element: <Navigate to="/nihongo/home"/>},
+    {path: '*', element: <Navigate to="/nihongo/home"/>},
 ];
 
 const Router = () => {

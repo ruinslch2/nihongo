@@ -1,7 +1,7 @@
 import {use} from "react";
 import httpService from "../utils/httpService.ts";
-import Card from "./components/Card.tsx";
 import {AxiosResponse} from "axios";
+import RouteCard from "./components/RouteCard.tsx";
 
 interface VocabularySizeType {
     statusCode: number,
@@ -26,9 +26,9 @@ const HomePage = () => {
             目前已學了{dictSize}個單字, N3完成度
             <span className="text-red-400">{(dictSize / 3750).toFixed(2)}%</span>
         </div>
-        <Card title="學習" subTitle="增加字典" link={"/nihongo/add-dictionary"}/>
-        <Card title="Timer Game" link={"/nihongo/timer-game"}/>
-        <Card title="Timer Game" link={"/nihongo/timer-game"}/>
+        <RouteCard title="學習" subTitle="增加字典" link={"/nihongo/add-dictionary"}/>
+        <RouteCard title="Timer Game" link={"/nihongo/timer-game"}/>
+        <RouteCard title="Timer Game" link={"/nihongo/timer-game"}/>
     </div>
 }
 

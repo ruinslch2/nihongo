@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import {KeyboardEventHandler, useEffect, useRef, useState} from "react";
 
 const DEFAULT_TIME = 5;
 
@@ -9,7 +9,7 @@ enum GAME_STEP {
     FAIL
 }
 
-const TimerGame = () => {
+const TimerGame = ({children}:{children: React.ReactNode}) => {
 
     const [step, setStep] = useState(GAME_STEP.PREPARE);
     const [remainingTime, setRemainingTime] = useState(DEFAULT_TIME);
@@ -29,6 +29,7 @@ const TimerGame = () => {
         clearInterval(timerRef.current)
     }
 
+
     useEffect(() => {
         if (remainingTime === 0) {
             setStep(GAME_STEP.FAIL)
@@ -36,16 +37,18 @@ const TimerGame = () => {
         }
     }, [remainingTime]);
 
-    return <>
-        <form className="flex flex-col gap-4" action={checkAnswer}>
-            <div className={`flex flex-col gap-4 ${step !== GAME_STEP.PREPARE ? '' : 'invisible'}`}>
-                <span>Remaining: {remainingTime}</span>
-                <span>{step === GAME_STEP.FAIL && 'X'} {step === GAME_STEP.SUCCESS && 'O'} Question: {question}</span>
-                <input type="text" className="border p-2" name="answer"></input>
-            </div>
-        </form>
-        <button onClick={countDown} disabled={step !== GAME_STEP.PREPARE}>Start</button>
-    </>
+    return <form className="flex flex-col gap-4 border p-4" action={checkAnswer}>
+        <span>Remaining: {remainingTime}</span>
+        {children}
+        {/*<div className={`flex flex-col gap-4 ${step !== GAME_STEP.PREPARE ? '' : 'invisible'}`}>*/}
+        {/*    <span>Remaining: {remainingTime}</span>*/}
+        {/*    <span>{step === GAME_STEP.FAIL && 'X'} {step === GAME_STEP.SUCCESS && 'O'} Question: {question}</span>*/}
+        {/*    <input type="text" className="border p-2" name="answer"></input>*/}
+        {/*</div>*/}
+        <button className="rounded-xl p-3 bg-blue-500 text-white" onClick={countDown}
+                disabled={step !== GAME_STEP.PREPARE}>Update
+        </button>
+    </form>
 }
 
 export default TimerGame;
