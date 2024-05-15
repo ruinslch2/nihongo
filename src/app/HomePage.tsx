@@ -2,6 +2,8 @@ import {use} from "react";
 import httpService from "../utils/httpService.ts";
 import {AxiosResponse} from "axios";
 import RouteCard from "./components/RouteCard.tsx";
+import {getMyLearningChart} from "../utils/apiService.ts";
+import NihonChart from "./components/NihonChart.tsx";
 
 interface VocabularySizeType {
     statusCode: number,
@@ -23,12 +25,13 @@ const HomePage = () => {
 
     return <div className="grid grid-flow-row grid-cols-3 gap-5 w-full justify-center p-5">
         <div className={"col-span-3 mx-auto p-5 rounded-2xl border w-full"}>
+            <div className={'w-1/3'}><NihonChart /></div>
             目前已學了{dictSize}個單字, N3完成度
             <span className="text-red-400">{(dictSize / 3750).toFixed(2)}%</span>
         </div>
-        <RouteCard title="學習" subTitle="增加字典" link={"/nihongo/add-dictionary"}/>
-        <RouteCard title="Timer Game" link={"/nihongo/timer-game"}/>
-        <RouteCard title="Timer Game" link={"/nihongo/timer-game"}/>
+        {/*<RouteCard title="學習" subTitle="增加字典" link={"/nihongo/add-dictionary"}/>*/}
+        {/*<RouteCard title="Timer Game" link={"/nihongo/timer-game"}/>*/}
+        {/*<RouteCard title="Timer Game" link={"/nihongo/timer-game"}/>*/}
     </div>
 }
 

@@ -1,42 +1,23 @@
 import {useActionState} from "react";
-import {AxiosResponse} from "axios";
-import httpService from "../../utils/httpService.ts";
-
-interface ResponseType {
-    statusCode: number,
-    body: number
-}
-
-const uploadDict = async ({value, spell, twValue, sentence}: {
-    value: string,
-    spell: string,
-    twValue: string,
-    sentence: string
-}) => {
-    const response: AxiosResponse<ResponseType> = await httpService.post('/test/uploadMyDictionary', {
-        value,
-        spell,
-        twValue,
-        sentence
-    });
-    if (response.status === 200) {
-        return response.data.body
-    }
-    return 0
-}
+import {uploadDictionary} from "../../utils/apiService.ts";
 
 const DictionaryForm = () => {
     const [state, submitAction, isPending] = useActionState(
         async (previousState, formData) => {
-            const state = await uploadDict({
+             uploadDictionary({
                 value: formData.get("value"),
                 spell: formData.get('spell'),
                 sentence: formData.get('sentence'),
                 twValue: formData.get('tw-value')
+            }).then((res) => {
+                if (res.status === 200) return res.data;
+            }).then(res => {
+                // console.log('rrrr: ', res.statusCode === 200)
+
             });
-            if (state) {
-                return state;
-            }
+            // if (state) {
+            //     return state;
+            // }
 
             return null;
         },
