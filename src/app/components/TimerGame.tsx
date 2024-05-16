@@ -37,6 +37,15 @@ const TimerGame = ({children}:{children: React.ReactNode}) => {
         }
     }, [remainingTime]);
 
+    // useEffect(() => {
+    //     if (step === GAME_STEP.FAIL) {
+    //         // decrease one score
+    //     } else if (step === GAME_STEP.SUCCESS) {
+    //         // increase one score
+    //     }
+    // }, [step]);
+
+
     return <form className="flex flex-col gap-4 border p-4" action={checkAnswer}>
         <span>Remaining: {remainingTime}</span>
         {children}

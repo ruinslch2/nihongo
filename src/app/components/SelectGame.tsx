@@ -1,14 +1,23 @@
 import Card from "./Card.tsx";
 import {useState} from "react";
 
-const SelectGame = () => {
+interface WordType {
+    sentence: string;
+    spell: string;
+    twValue: string;
+    value: string;
+    _id: string;
+}
+
+const SelectGame = ({data}: { data: WordType[] }) => {
     const [selectedCardId, setSelectedCardId] = useState<number>();
 
+
     return <div className={'grid grid-flow-row grid-cols-2 gap-5'}>
-        <Card className={selectedCardId === 0 ? 'border-blue-300' : ''} onClick={() => setSelectedCardId(0)}>123</Card>
-        <Card className={selectedCardId === 1 ? 'border-blue-300' : ''} onClick={() => setSelectedCardId(1)}>123</Card>
-        <Card className={selectedCardId === 2 ? 'border-blue-300' : ''} onClick={() => setSelectedCardId(2)}>123</Card>
-        <Card className={selectedCardId === 3 ? 'border-blue-300' : ''} onClick={() => setSelectedCardId(3)}>123</Card>
+
+        {data.map((d, index) => (
+            <Card key={d._id} className={selectedCardId === index ? 'border-blue-300' : ''} onClick={() => setSelectedCardId(index)}>{d.spell}</Card>
+        ))}
     </div>
 }
 

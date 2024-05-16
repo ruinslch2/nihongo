@@ -1,6 +1,6 @@
 const Card: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({className, children, ...props}) => {
     return <div
-        className={`rounded-2xl mx-auto w-[150px] h-[150px] border-2 p-5 flex flex-col ${className}`} {...props}>
+        className={`rounded-2xl mx-auto w-[150px] h-[150px] border-2 p-5 flex flex-col justify-center ${className}`} {...props}>
         {children}
     </div>
 }
