@@ -1,9 +1,7 @@
 import SelectGame from "../components/SelectGame.tsx";
-import TimerGame from "../components/TimerGame.tsx";
 import {getVocabularyTest} from "../../utils/apiService.ts";
-import {use, useMemo} from "react";
+import {use, useMemo, useState} from "react";
 import {getRandomObject} from "../../utils/userful.ts";
-
 
 const promiseFetchData = getVocabularyTest();
 
@@ -21,27 +19,44 @@ interface WordType {
     value: string;
 }
 
+export interface OutcomeType {
+    good: string[],
+    bad: string[],
+}
+
 const SelectCardPage = () => {
-    const {data} = use(promiseFetchData)
+    const {data: response} = use(promiseFetchData)
+    const [outcome, setOutcome] = useState<OutcomeType>({good: [], bad: []});
+    const [times, setTimes] = useState(0);
 
-    const examList = useMemo(() => {
-        return makeQuestionList(data.data, 2);
-    }, [])
+    const question = useMemo(() => {
+        return makeQuestion(response.data);
+    }, [times])
 
-    return <TimerGame>
-        <SelectGame data={examList[0]}/>
-    </TimerGame>
+    const countOutcome = (id: string, isSuccess: boolean) => {
+        if (isSuccess) {
+            setOutcome({
+                ...outcome,
+                good: [...outcome.good, id]
+            })
+        } else {
+            setOutcome({
+                ...outcome,
+                bad: [...outcome.bad, id]
+            })
+        }
+    }
+
+    console.log('outCome: ', outcome)
+
+
+    return <SelectGame data={question} nextQuestion={() => setTimes(prev => prev + 1)}
+                       countOutcome={(id, isSuccess) => countOutcome(id, isSuccess)}/>
 }
 export default SelectCardPage;
 
-const makeQuestionList = (data: WordType[], size: number) => {
-    const res = [];
-
-    for(let i=0;i<size;i++) {
-        const answerIndex = Math.floor(Math.random()*4)
-        const randomObjList = getRandomObject<WordType>(data, 4);
-        res.push({answer: randomObjList[answerIndex], questionList: randomObjList})
-    }
-
-    return res
+const makeQuestion = (data: WordType[]) => {
+    const answerIndex = Math.floor(Math.random() * 4)
+    const randomObjList = getRandomObject<WordType>(data, 4);
+    return {answer: randomObjList[answerIndex], questionList: randomObjList}
 }
