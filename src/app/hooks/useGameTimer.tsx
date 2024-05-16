@@ -1,18 +1,9 @@
 import {useCallback, useEffect, useRef, useState} from "react";
-
-const DEFAULT_TIME = 5;
-
-export enum GAME_STEP {
-    PREPARE,
-    RUNNING,
-    SUCCESS,
-    FAIL
-}
-
+import {DEFAULT_GAME_TIME, GAME_STEP} from "../constant.ts";
 const useGameTimer = ({question}: { question: string }) => {
 
     const [step, setStep] = useState(GAME_STEP.PREPARE);
-    const [remainingTime, setRemainingTime] = useState(DEFAULT_TIME);
+    const [remainingTime, setRemainingTime] = useState(DEFAULT_GAME_TIME);
     const [answer, setAnswer] = useState<string>();
     const timerRef = useRef<number>(0);
 
@@ -37,7 +28,7 @@ const useGameTimer = ({question}: { question: string }) => {
 
     const resetGame = () => {
         setStep(GAME_STEP.PREPARE)
-        setRemainingTime(DEFAULT_TIME)
+        setRemainingTime(DEFAULT_GAME_TIME)
         setAnswer(undefined)
         timerRef.current = 0;
     }

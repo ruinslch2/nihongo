@@ -1,7 +1,8 @@
 import Card from "./Card.tsx";
 import {useEffect, useMemo, useState} from "react";
-import {OutcomeType, SelectGameQuestionType} from "../Pages/SelectCardPage.tsx";
-import useGameTimer, {GAME_STEP} from "../hooks/useGameTimer.tsx";
+import {SelectGameQuestionType} from "../Pages/SelectCardPage.tsx";
+import useGameTimer from "../hooks/useGameTimer.tsx";
+import {GAME_STEP} from "../constant.ts";
 
 const SelectGame = ({data, nextQuestion, countOutcome}: {
     data: SelectGameQuestionType,
