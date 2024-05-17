@@ -36,12 +36,12 @@ const SelectGame = ({data, nextQuestion, countOutcome}: {
         countOutcome(data.answer._id, gameStatus === GAME_STEP.SUCCESS);
     }, [isFinished]);
 
-    return <div className={'grid grid-flow-row grid-cols-2 gap-5 border-2 p-10'}>
+    return <div className={'grid grid-flow-row grid-cols-2 gap-5 border-2 p-10 w-[400px] m-auto'}>
         <span className="col-span-2">remaining {remainingTime} sec</span>
         <span className="col-span-2">{answer.twValue}</span>
         {questionList.map((d, index) => (
             <Card key={d._id}
-                  className={`
+                  className={`w-[150px] h-[150px]
                     ${selectedCardId === index ? 'border-blue-300' : ''} 
                     ${isFinished && d._id === answer._id ? 'bg-green-300 border-green-300' : ''} 
                     ${gameStatus === GAME_STEP.FAIL && index === selectedCardId ? 'bg-red-300  border-red-300' : ''}

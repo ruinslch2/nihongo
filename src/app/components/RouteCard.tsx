@@ -11,7 +11,7 @@ const RouteCard = ({className, title, subTitle, link, icon, color}: {
 }) => {
     return (
         <Card
-            className={`relative rounded-2xl mx-auto w-[300px] border border-black h-[70px] flex flex-row shadow-xl p-0 ${className}`}>
+            className={`relative rounded-2xl border border-black h-[70px] flex flex-row p-0 ${className}`}>
             {icon && <div className="z-10 w-10 h-10 absolute top-[-20px] left-[10px]">
                 <img src={icon} alt={'icon'}/>
             </div>
@@ -25,7 +25,7 @@ const RouteCard = ({className, title, subTitle, link, icon, color}: {
                         to={link}
                     >
                         <div
-                            className={`w-4 h-full right-[-5px] pointer-events-none absolute z-1 scale-x-1 group-hover:scale-x-[40] duration-500 ${color}`}>
+                            className={`w-4 h-full right-[-5px] pointer-events-none absolute z-1 scale-x-1 group-hover:scale-x-[80] duration-500 ${color}`}>
                         </div>
                         <span className="relative my-auto mr-5">出発</span>
                     </Link>

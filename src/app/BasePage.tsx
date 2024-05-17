@@ -5,7 +5,7 @@ const BasePage = () => {
 
     return (
         <Suspense fallback={<div>Loading...</div>}>
-            <div className="items-center justify-center flex min-h-screen w-full flex-col">
+            <div className="flex min-h-screen h-screen w-full p-10 flex-col">
                 <Outlet/>
             </div>
         </Suspense>
