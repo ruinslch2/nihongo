@@ -51,7 +51,7 @@ const SelectGame = ({data, nextQuestion, countOutcome}: {
                 {d.spell}
             </Card>
         ))}
-        <button className="col-span-2 rounded-xl p-3 bg-blue-500 text-white"
+        <button className="col-span-2 rounded-xl p-3 bg-blue-500 text-white disabled:bg-gray-400"
                 onClick={handleNextQ}
                 disabled={!isFinished}>Next
         </button>
