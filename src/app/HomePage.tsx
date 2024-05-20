@@ -10,7 +10,7 @@ import River from "./components/River.tsx";
 const promiseFetchData = fetchDictSize();
 
 const HomePage = () => {
-
+    console.log('hi server')
     const {data} = use(promiseFetchData);
 
     return <div className="flex flex-col h-full gap-5 w-full">
@@ -18,7 +18,7 @@ const HomePage = () => {
             {/*<div className={'w-1/3'}><NihonChart /></div>*/}
             <div>
                 目前已學了{data.data}個單字, N3完成度
-                <span className="text-red-400">{(data.data / 3750).toFixed(2)}%</span>
+                <span className="text-red-400">{(data.data / 3750 * 100.0).toFixed(2)}%</span>
             </div>
         </Card>
         <Card className="flex-1 w-full py-10 grid grid-flow-row grid-cols-2">

@@ -1,5 +1,6 @@
 import {useCallback, useEffect, useRef, useState} from "react";
 import {DEFAULT_GAME_TIME, GAME_STEP} from "../constant.ts";
+
 const useGameTimer = ({question}: { question: string }) => {
 
     const [step, setStep] = useState(GAME_STEP.PREPARE);
@@ -33,7 +34,11 @@ const useGameTimer = ({question}: { question: string }) => {
         timerRef.current = 0;
     }
 
-    return {startGame: countDown, gameStatus: step, setAnswer, remainingTime, resetGame}
+    const confirmAnswer = () => {
+        setRemainingTime(0);
+    }
+
+    return {startGame: countDown, gameStatus: step, setAnswer, remainingTime, resetGame, confirmAnswer}
 }
 
 export default useGameTimer;

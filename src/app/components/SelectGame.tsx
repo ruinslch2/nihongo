@@ -12,7 +12,14 @@ const SelectGame = ({data, nextQuestion, countOutcome}: {
     const [selectedCardId, setSelectedCardId] = useState<number>();
     const {questionList, answer} = data;
 
-    const {setAnswer, startGame, remainingTime, gameStatus, resetGame} = useGameTimer({question: answer._id})
+    const {
+        setAnswer,
+        startGame,
+        remainingTime,
+        gameStatus,
+        resetGame,
+        confirmAnswer
+    } = useGameTimer({question: answer._id})
     const isFinished = useMemo(() => gameStatus === GAME_STEP.FAIL || gameStatus === GAME_STEP.SUCCESS, [gameStatus])
 
     useEffect(() => {
@@ -25,6 +32,7 @@ const SelectGame = ({data, nextQuestion, countOutcome}: {
     }
 
     const handleNextQ = () => {
+        if (!isFinished) confirmAnswer();
         nextQuestion();
         setSelectedCardId(undefined)
         resetGame();
@@ -48,13 +56,16 @@ const SelectGame = ({data, nextQuestion, countOutcome}: {
                   `}
                   onClick={() => handleSelectCard(index)}
             >
-                {d.spell}
+                {d.value !== d.spell && isFinished && <span className={"text-sm"}>{d.spell}</span>}
+                <span className={"text-2xl"}>{d.value}</span>
             </Card>
         ))}
-        <button className="col-span-2 rounded-xl p-3 bg-blue-500 text-white disabled:bg-gray-400"
-                onClick={handleNextQ}
-                disabled={!isFinished}>Next
-        </button>
+        {isFinished ? (
+            <button className="col-span-2 rounded-xl p-3 bg-blue-500 text-white disabled:bg-gray-400"
+                    onClick={handleNextQ}
+                    disabled={!isFinished}>Next
+            </button>) : <button className="col-span-2 rounded-xl p-3 bg-blue-500 text-white"
+                                 onClick={confirmAnswer}>Confirm</button>}
     </div>
 }
 
