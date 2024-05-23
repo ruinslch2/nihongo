@@ -3,6 +3,7 @@ import {uploadDictionary} from "../../utils/apiService.ts";
 
 const DictionaryForm = () => {
     const [state, submitAction, isPending] = useActionState(
+        // @ts-expect-error: TS6133
         async (previousState, formData) => {
              uploadDictionary({
                 value: formData.get("value"),
@@ -10,9 +11,10 @@ const DictionaryForm = () => {
                 sentence: formData.get('sentence'),
                 twValue: formData.get('tw-value')
             }).then((res) => {
+                 console.log('wqwqeqw: ', res)
                 if (res.status === 200) return res.data;
             }).then(res => {
-                // console.log('rrrr: ', res.statusCode === 200)
+                console.log('rrrr: ', res.statusCode === 200)
 
             });
             // if (state) {

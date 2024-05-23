@@ -10,7 +10,8 @@ const PAGE_CONFIG: RouteObject[] = [
         element: <BasePage/>,
         children: [
             {path: 'home', element: <HomePage/>},
-            {path: 'timer-game', element: <SelectCardPage />},
+            {path: 'timer-game', element: <SelectCardPage isVoice={false}/>},
+            {path: 'timer-game-voice', element: <SelectCardPage isVoice={true}/>},
             {path: 'add-dictionary', element: <DictionaryForm/>}
         ],
     },

@@ -11,5 +11,9 @@ export default defineConfig({
         changeOrigin: true,
       }
     }
+  },
+  preview: {
+    host: '192.168.24.85',
+    port: 4173,
   }
 })

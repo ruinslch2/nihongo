@@ -4,7 +4,8 @@ import {SelectGameQuestionType} from "../Pages/SelectCardPage.tsx";
 import useGameTimer from "../hooks/useGameTimer.tsx";
 import {GAME_STEP} from "../constant.ts";
 
-const SelectGame = ({data, nextQuestion, countOutcome}: {
+const SelectGame = ({isVoice, data, nextQuestion, countOutcome}: {
+    isVoice: boolean
     data: SelectGameQuestionType,
     nextQuestion: () => void,
     countOutcome: (id: string, isSuccess: boolean) => void
@@ -20,11 +21,14 @@ const SelectGame = ({data, nextQuestion, countOutcome}: {
         resetGame,
         confirmAnswer
     } = useGameTimer({question: answer._id})
+
     const isFinished = useMemo(() => gameStatus === GAME_STEP.FAIL || gameStatus === GAME_STEP.SUCCESS, [gameStatus])
 
     useEffect(() => {
+        setSelectedCardId(undefined)
+        resetGame();
         startGame();
-    }, []);
+    }, [data]);
     const handleSelectCard = (index: number) => {
         if (isFinished) return;
         setSelectedCardId(index);
@@ -34,9 +38,6 @@ const SelectGame = ({data, nextQuestion, countOutcome}: {
     const handleNextQ = () => {
         if (!isFinished) confirmAnswer();
         nextQuestion();
-        setSelectedCardId(undefined)
-        resetGame();
-        startGame();
     }
 
     useEffect(() => {
@@ -46,7 +47,11 @@ const SelectGame = ({data, nextQuestion, countOutcome}: {
 
     return <div className={'grid grid-flow-row grid-cols-2 gap-5 border-2 p-10 w-[400px] m-auto'}>
         <span className="col-span-2">remaining {remainingTime} sec</span>
-        <span className="col-span-2">{answer.twValue}</span>
+        {isVoice ? (
+            <audio key={data.answer._id} controls autoPlay className="col-span-2">
+                <source src={data.voice} type="audio/mp3" />
+            </audio>
+        ) : <span className="col-span-2">{answer.twValue}</span>}
         {questionList.map((d, index) => (
             <Card key={d._id}
                   className={`w-[150px] h-[150px]
