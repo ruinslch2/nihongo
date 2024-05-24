@@ -22,7 +22,7 @@ const HomePage = () => {
             </div>
         </Card>
         <Card className="flex-1 w-full py-10 grid grid-flow-row grid-cols-2">
-            <div className="col-span-1 flex flex-col gap-5 p-5">
+            <div className="col-span-2 md:col-span-1 flex flex-col gap-5 p-5">
                 <RouteCard title="辞書" subTitle="語彙を増やす" link={"/nihongo/add-dictionary"} icon={bookIcon}
                            color={'bg-red-200'}/>
                 <RouteCard title="Select Game" link={"/nihongo/timer-game"} icon={""} color={'bg-blue-200'}/>
