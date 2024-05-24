@@ -6,16 +6,15 @@ import SelectCardPage from "./app/Pages/SelectCardPage.tsx";
 
 const PAGE_CONFIG: RouteObject[] = [
     {
-        path: '/',
+        path: '/nihongo',
         element: <BasePage/>,
         children: [
             {path: 'home', element: <HomePage/>},
             {path: 'timer-game', element: <SelectCardPage isVoice={false}/>},
             {path: 'timer-game-voice', element: <SelectCardPage isVoice={true}/>},
             {path: 'add-dictionary', element: <DictionaryForm/>},
-            {path: '/', element: <Navigate to="/home"/>},
-            {path: '', element: <Navigate to="/home"/>},
-            {path: '*', element: <Navigate to="/home"/>},
+            {path: '', element: <Navigate to="/nihongo/home"/>},
+            {path: '*', element: <Navigate to="/nihongo/home"/>},
         ]
     },
 ]
