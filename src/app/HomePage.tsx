@@ -1,4 +1,4 @@
-import {use} from "react";
+import {use, useEffect, useState} from "react";
 import RouteCard from "./components/RouteCard.tsx";
 import {fetchDictSize} from "../utils/apiService.ts";
 import bookIcon from "../assets/icon-book.png";
@@ -6,12 +6,21 @@ import bookIcon from "../assets/icon-book.png";
 import Card from "./components/Card.tsx";
 import River from "./components/River.tsx";
 import {NIHONGO_LEVEL} from "./constant.ts";
+import Modal from "./components/Modal.tsx";
+import UserModal from "./components/UserModal.tsx";
 
 
 const promiseFetchData = fetchDictSize();
 
 const HomePage = () => {
     const {data} = use(promiseFetchData);
+
+    const [isOpenWho, setIsOpenWho] = useState(false);
+
+    useEffect(() => {
+        if (!sessionStorage.getItem('name')) setIsOpenWho(true)
+    }, []);
+
 
     return <div className="flex flex-col h-full gap-5 w-full">
         <Card className="gap-5 w-full py-10">
@@ -29,10 +38,11 @@ const HomePage = () => {
                 <RouteCard title="Voice Game" link={"/nihongo/timer-game-voice"} icon={""} color={'bg-green-200'}/>
             </div>
         </Card>
-        <Card className="w-full h-[200px]">
-            <River/>
-        </Card>
+        {/*<Card className="w-full h-[200px]">*/}
+        {/*    <River />*/}
+        {/*</Card>*/}
         {/*<RouteCard title="Timer Game" link={"/nihongo/timer-game"} icon={bookIcon}/>*/}
+        {isOpenWho && <UserModal onClose={() => setIsOpenWho(false)}/>}
     </div>
 }
 
