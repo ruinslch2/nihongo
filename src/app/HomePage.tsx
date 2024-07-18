@@ -8,6 +8,7 @@ import River from "./components/River.tsx";
 import {NIHONGO_LEVEL} from "./constant.ts";
 import Modal from "./components/Modal.tsx";
 import UserModal from "./components/UserModal.tsx";
+import ShiningMilkImg from "../assets/ShiningMilk.png"
 
 
 const promiseFetchData = fetchDictSize();
@@ -38,6 +39,10 @@ const HomePage = () => {
                 <RouteCard title="Voice Game" link={"/nihongo/timer-game-voice"} icon={""} color={'bg-green-200'}/>
             </div>
         </Card>
+
+        <div className="w-40 opacity-50 hover:opacity-100 hover:scale-125 duration-500">
+            <img src={ShiningMilkImg}/>
+        </div>
         {/*<Card className="w-full h-[200px]">*/}
         {/*    <River />*/}
         {/*</Card>*/}
