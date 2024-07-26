@@ -1,8 +1,9 @@
 import SelectGame from "../components/SelectGame.tsx";
-import {getVocabularyTest} from "../../utils/apiService.ts";
+import {getVocabularyTest, uploadOutcome} from "../../utils/apiService.ts";
 import {use, useEffect, useState} from "react";
 import {getRandomObject} from "../../utils/userful.ts";
 import {getVoice} from "../../utils/ttsApiService.ts";
+import {GAME_TYPE} from "../constant.ts";
 
 const promiseFetchData = getVocabularyTest();
 
@@ -19,69 +20,87 @@ interface WordType {
     spell: string;
     twValue: string;
     value: string;
+    score: {
+        score: number;
+    };
 }
 
 export interface OutcomeType {
-    good: string[],
-    bad: string[],
+    id: string,
+    score: number,
+    isSuccess: boolean,
 }
 
 const SelectCardPage = ({isVoice}: { isVoice: boolean }) => {
     const {data: response} = use(promiseFetchData)
-    const [outcome, setOutcome] = useState<OutcomeType>({good: [], bad: []});
+    const [outcome, setOutcome] = useState<OutcomeType[]>([]);
     const [times, setTimes] = useState(0);
-
-    // const question = useMemo(async () => {
-    //     const data2 = await makeQuestion(response.data);
-    //     console.log('data: ', data2)
-    //     return data2
-    // }, [times])
-
     const [question, setQuestion] = useState<SelectGameQuestionType>()
+    const [displayMsg, setDisplayMsg] = useState("")
+    const gameType = isVoice ? GAME_TYPE.VOICE_CHARACTER : GAME_TYPE.TEXT_CHARACTER
 
     useEffect(() => {
-        const getVoiceData = async () => {
+        const getWordData = async () => {
             const data = await makeQuestion(response.data, isVoice);
             setQuestion(data);
         }
-
-        console.log('times isvoide: ', [times, isVoice])
-        getVoiceData();
-
+        getWordData();
     }, [times, isVoice]);
 
-    const countOutcome = (id: string, isSuccess: boolean) => {
+    const countOutcome = (testData: { id: string, score: number }, isSuccess: boolean) => {
         // if this question is fail in this test, you can't change the outcome anymore.
-        if (outcome.bad.includes(id)) return;
-        if (outcome.good.includes(id) && !isSuccess) {
-            setOutcome({
-                good: outcome.good.filter(o => o !== id),
-                bad: [...outcome.bad, id],
-            })
+        const findIndex = outcome.findIndex(data => data.id === testData.id)
+        if (findIndex === -1) {
+            outcome.push({...testData, isSuccess})
             return;
         }
-        if (isSuccess) {
-            setOutcome({
-                ...outcome,
-                good: [...outcome.good, id]
-            })
-        } else {
-            setOutcome({
-                ...outcome,
-                bad: [...outcome.bad, id]
-            })
+        if (!isSuccess) {
+            outcome[findIndex].isSuccess = false
         }
+        setOutcome(outcome)
     }
 
+    const handleUploadRecord = () => {
+
+        const scoreList = outcome.map(o => {
+            const nowScore = o.score ?? 0
+            if (nowScore === 0) {
+                return {
+                    id: o.id,
+                    score: o.isSuccess ? nowScore + 1 : 0
+                }
+            } else {
+                return {
+                    id: o.id,
+                    score: o.isSuccess ? nowScore + 1 : nowScore - 1
+                }
+            }
+
+        })
+        uploadOutcome({scoreList: scoreList, type: gameType}).then((res) => {
+            if (res.status === 200) return res.data;
+        }).then(res => {
+            if (res.statusCode === 200) {
+                setDisplayMsg('Success upload')
+            } else {
+                setDisplayMsg(res)
+            }
+        });
+    }
 
     if (!question) return ''
     return (
-        <div>
-            <SelectGame isVoice={isVoice}
-                        data={question}
-                        nextQuestion={() => setTimes(prev => prev + 1)}
-                        countOutcome={(id, isSuccess) => countOutcome(id, isSuccess)}
+        <div className="flex flex-col h-full items-center">
+            <SelectGame
+                isVoice={isVoice}
+                data={question}
+                nextQuestion={() => setTimes(prev => prev + 1)}
+                countOutcome={(data, isSuccess) => countOutcome(data, isSuccess)}
             />
+            <button className="col-span-2 w-[100px] h-[100px] rounded-xl p-3 bg-green-500 text-white"
+                    onClick={handleUploadRecord}>Upload
+            </button>
+            {displayMsg && <div>{displayMsg}</div>}
         </div>
     )
 }
@@ -91,7 +110,6 @@ const makeQuestion = async (data: WordType[], isVoice = false) => {
     const answerIndex = Math.floor(Math.random() * 4)
     const randomObjList = getRandomObject<WordType>(data, 4);
     if (isVoice) {
-        console.log('???')
         const response = await getVoice({text: randomObjList[answerIndex].value});
         return {answer: randomObjList[answerIndex], voice: response.data.audio_file_url, questionList: randomObjList}
     }

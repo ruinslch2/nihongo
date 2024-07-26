@@ -8,7 +8,7 @@ const SelectGame = ({isVoice, data, nextQuestion, countOutcome}: {
     isVoice: boolean
     data: SelectGameQuestionType,
     nextQuestion: () => void,
-    countOutcome: (id: string, isSuccess: boolean) => void
+    countOutcome: (data: { id: string, score: number }, isSuccess: boolean) => void
 }) => {
     const [selectedCardId, setSelectedCardId] = useState<number>();
     const {questionList, answer} = data;
@@ -42,14 +42,17 @@ const SelectGame = ({isVoice, data, nextQuestion, countOutcome}: {
 
     useEffect(() => {
         if (!isFinished) return;
-        countOutcome(data.answer._id, gameStatus === GAME_STEP.SUCCESS);
+        countOutcome({
+            id: data.answer._id,
+            score: data.answer.score?.score
+        }, gameStatus === GAME_STEP.SUCCESS);
     }, [isFinished]);
 
     return <div className={'grid grid-flow-row grid-cols-2 gap-5 border-2 p-10 w-[400px] m-auto'}>
         <span className="col-span-2">remaining {remainingTime} sec</span>
         {isVoice ? (
             <audio key={data.answer._id} controls autoPlay className="col-span-2">
-                <source src={data.voice} type="audio/mp3" />
+                <source src={data.voice} type="audio/mp3"/>
             </audio>
         ) : <span className="col-span-2">{answer.twValue}</span>}
         {questionList.map((d, index) => (

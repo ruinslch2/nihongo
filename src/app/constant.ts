@@ -11,3 +11,8 @@ export enum NIHONGO_LEVEL {
 }
 
 export const DEFAULT_GAME_TIME = 5;
+
+export enum GAME_TYPE {
+    TEXT_CHARACTER= 'Text_Character',
+    VOICE_CHARACTER = 'Voice_Character'
+}
